@@ -1,7 +1,8 @@
-import { Example, Post, Put, Route, SuccessResponse, Tags, Response, Body } from '@tsoa/runtime';
+import { Example, Post, Get, Route, SuccessResponse, Tags, Response, Body, Path, Put } from '@tsoa/runtime';
 import { CreateUrlshortenerSchema } from './UrlshortenerSchema';
 import administratorUrlshortenerUseCase from '../domain/usecase/AdministratorUrlshortenerUseCase';
 import { Logger } from "tslog";
+import Urlshortener from '../entity/Urlshortener.entity';
 const logger: Logger = new Logger();
 
 @Tags('UrlshortenerBase')
@@ -23,8 +24,53 @@ class UrlshortenerController {
     logger.debug(urlSchema);
     const urlsDTO = await administratorUrlshortenerUseCase.saveUrlshortener(urlSchema);
     let response = {urls: urlsDTO.urlshort, msg: 'Urlshortener created successful'};
-    //logger.info(urlSchema);
     return response;
+   }
+
+  /**
+   * Lista urlshortener de un owner, por defecto tiene un tope de 50 por página
+   *
+   * @summary Lista urlshortener de un owner
+   */
+   @Get('/list/{owner}')
+   @Example<string>('grineldosanchez@yahoo.es')
+   @SuccessResponse('200', 'List Urlshortener')
+   @Response<unknown>('422', 'Unprocessable Entity - error param')
+   public async list(@Path() owner: string): Promise<Urlshortener[]> {    
+    logger.debug(owner);
+    const list = await administratorUrlshortenerUseCase.list(owner);
+    return list;
+  }
+
+  /**
+   * Establece el estado de una shorturl, las posibilidades son true (activo), false (inactivo)
+   *
+   * @summary Establece el estado de una shorturl
+   */
+   @Put('/{shorturl}/{status}')
+   @Example<{shorturl: string,  newStatus: boolean}>({
+    shorturl: '62b81be4081594ac4ae13ffb',
+    newStatus: true,
+   })
+   @Response<unknown>('422', 'Unprocessable Entity - Body error', {
+     error: [
+       {
+         message: '"status" is required',
+         path: ['status'],
+         type: 'any.required',
+         context: {
+           label: 'status',
+           key: 'status',
+         },
+       },
+     ],
+   })
+   @SuccessResponse('204', 'Set status OK')
+   public async setStatus(@Path() shorturl: string, @Path() status: boolean): Promise<boolean> {
+      logger.debug(shorturl);
+      logger.debug(status);
+      administratorUrlshortenerUseCase.setStatus(shorturl, status);
+      return status;
    }
 
 }

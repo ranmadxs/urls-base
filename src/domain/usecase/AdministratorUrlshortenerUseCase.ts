@@ -11,10 +11,20 @@ class AdministratorUrlshortenerUseCase {
     public async saveUrlshortener(urlshortenerSchema: CreateUrlshortenerSchema): Promise<UrlshortenerDTO> {
         //const urlshortenerRepository = new UrlshortenerRepository();
         let urlshortener = new Urlshortener(urlshortenerSchema.url, new Date, new Date, true, urlshortenerSchema.owner);
-        urlshortener = await urlshortenerRepository.updateNotificationEvent(urlshortener);
-        const urlshortenerDTO = new UrlshortenerDTO(urlshortener.url, urlshortener.owner, this.createUrlShort(String(urlshortener._id)), urlshortener.status);
+        urlshortener = await urlshortenerRepository.save(urlshortener);
+        const urlshortenerDTO = new UrlshortenerDTO(urlshortener.url, urlshortener.owner, this.createUrlShort(String(urlshortener.id)), urlshortener.isActive);
         logger.debug(urlshortenerDTO);
         return urlshortenerDTO;
+    }
+
+    public async list(owner: string): Promise<Urlshortener[]> {
+        const listUrls = await urlshortenerRepository.listByOwner(owner);
+        return listUrls;
+    }
+
+    public async setStatus(shorturl: string,  newStatus: boolean): Promise<Boolean> {
+        await urlshortenerRepository.updateStatus(shorturl, newStatus);
+        return newStatus;
     }
 
     private createUrlShort(uri: string): string {

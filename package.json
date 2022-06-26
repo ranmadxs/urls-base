@@ -14,7 +14,7 @@
     "swagger-ui-express": "4.3.0",
     "tslog": "^3.3.3",
     "tsoa": "^3.14.1",
-    "typeorm": "0.2.41",
+    "typeorm": "^0.2.41",
     "winston": "^3.3.3",
     "xml-js": "^1.6.11",
     "xmlbuilder": "^15.1.1"

@@ -21,6 +21,57 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"ObjectID": {
+				"description": "Create a new ObjectID instance.",
+				"properties": {
+					"generationTime": {
+						"type": "number",
+						"format": "double",
+						"description": "The generation time of this ObjectId instance."
+					}
+				},
+				"required": [
+					"generationTime"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Boolean": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Urlshortener": {
+				"properties": {
+					"id": {
+						"$ref": "#/components/schemas/ObjectID"
+					},
+					"url": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"isActive": {
+						"$ref": "#/components/schemas/Boolean"
+					},
+					"owner": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"url",
+					"isActive",
+					"owner"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -82,6 +133,131 @@
 						}
 					}
 				}
+			}
+		},
+		"/urlshortener/list/{owner}": {
+			"get": {
+				"operationId": "List",
+				"responses": {
+					"200": {
+						"description": "List Urlshortener",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Urlshortener"
+									},
+									"type": "array"
+								},
+								"examples": {
+									"Example 1": {
+										"value": "grineldosanchez@yahoo.es"
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Unprocessable Entity - error param",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"description": "Lista urlshortener de un owner, por defecto tiene un tope de 50 por página",
+				"summary": "Lista urlshortener de un owner",
+				"tags": [
+					"UrlshortenerBase"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "owner",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/urlshortener/{shorturl}/{status}": {
+			"put": {
+				"operationId": "SetStatus",
+				"responses": {
+					"204": {
+						"description": "Set status OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"shorturl": "62b81be4081594ac4ae13ffb",
+											"newStatus": true
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Unprocessable Entity - Body error",
+						"content": {
+							"application/json": {
+								"schema": {},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"error": [
+												{
+													"message": "\"status\" is required",
+													"path": [
+														"status"
+													],
+													"type": "any.required",
+													"context": {
+														"label": "status",
+														"key": "status"
+													}
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Establece el estado de una shorturl, las posibilidades son true (activo), false (inactivo)",
+				"summary": "Establece el estado de una shorturl",
+				"tags": [
+					"UrlshortenerBase"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "shorturl",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "status",
+						"required": true,
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				]
 			}
 		}
 	},

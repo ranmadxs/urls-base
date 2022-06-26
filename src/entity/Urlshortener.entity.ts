@@ -1,9 +1,9 @@
-import {Column, Entity, Index, ObjectID, ObjectIdColumn} from 'typeorm';
+import {Column, Entity, Index, ObjectID, ObjectIdColumn, PrimaryColumn} from 'typeorm';
 
 @Entity({name: 'urlshortener'})
 export default class Urlshortener {
-    @ObjectIdColumn()
-    _id?: ObjectID;
+    @ObjectIdColumn({ name: '_id' })
+    id?: ObjectID;    
 
     @Column()
     url!: string;
@@ -15,16 +15,16 @@ export default class Urlshortener {
     updatedAt?: Date;
     
     @Column()
-    status!: Boolean;
+    isActive!: Boolean;
     
     @Column()
     owner!: string;    
 
-    constructor(url: string, createdAt: Date, updatedAt: Date, status: Boolean, owner: string) {
+    constructor(url: string, createdAt: Date, updatedAt: Date, isActive: Boolean, owner: string) {
         this.url = url;
         this.createdAt = createdAt;        
         this.updatedAt = updatedAt;
-        this.status = status;
+        this.isActive = isActive;
         this.owner = owner;
     }
 
