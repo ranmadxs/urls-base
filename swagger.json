@@ -1,0 +1,99 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"CreateUrlshortenerSchema": {
+				"properties": {
+					"url": {
+						"type": "string"
+					},
+					"owner": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"url",
+					"owner"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "urlshortener-base",
+		"version": "1.0.0",
+		"description": "urlshortener",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/urlshortener": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Urlshortener created successful",
+						"content": {
+							"application/json": {
+								"schema": {},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"url": "https://www.google.com/search?q=lorem+ipsum",
+											"owner": "grineldosanchez@yahoo.es"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Unprocessable Entity - Body error",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"description": "Crea urlshortener a partir de la url original ingresada por el usuario, por defecto queda inmediatamente activa.",
+				"summary": "Crea urlshortener a partir de la url original ingresada por el usuario",
+				"tags": [
+					"UrlshortenerBase"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateUrlshortenerSchema"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	],
+	"tags": [
+		{
+			"name": "UrlshortenerBase",
+			"description": "urlshortener Base API"
+		}
+	]
+}

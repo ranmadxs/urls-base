@@ -1,0 +1,18 @@
+{
+  "entryFile": "src/app.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "ignore": ["**/node_modules/**"],
+  "controllerPathGlobs": ["./src/**/*Controller.ts"],
+  "spec": {
+    "name": "urlshortener-base",
+    "description": "urlshortener",
+    "outputDirectory": ".",
+    "specVersion": 3,
+    "tags": [
+      {
+        "name": "UrlshortenerBase",
+        "description": "urlshortener Base API"
+      }
+    ]
+  }
+}
