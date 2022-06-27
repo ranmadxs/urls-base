@@ -16,7 +16,7 @@ Para revisar la documentación "viva" (openApi)
 ```
 https://urls-base.herokuapp.com/
 ```
-![swagger](https://github.com/ranmadxs/urls-base/main/doc/img03.png?raw=true)
+![swagger](https://raw.githubusercontent.com/ranmadxs/urls-base/main/doc/img03.png)
 
 ## Heroku
 
