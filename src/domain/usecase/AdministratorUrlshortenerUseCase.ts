@@ -28,7 +28,7 @@ class AdministratorUrlshortenerUseCase {
     }
 
     private createUrlShort(uri: string): string {
-        const resp = String(process.env.BASE_URL) + ':' + String(process.env.PORT + '/' + uri);
+        const resp = String(process.env.BASE_URL) + '/' + uri;
         return resp;
     }
 
